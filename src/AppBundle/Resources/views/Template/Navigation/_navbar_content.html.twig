@@ -25,17 +25,17 @@
                 <li role="separator" class="divider"></li>
                 <li>
                     <a href="{{ path('caldera_criticalmass_static_display', { slug: 'what-is-the-mass' }) }}">
-                        Was ist die Critical Mass?
+                        {% trans %}criticalmass.navigation.help.what-is-critical-mass{% endtrans %}
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('caldera_criticalmass_static_display', { slug: 'faq' }) }}">
-                        Häufig gestellte Fragen
+                        {% trans %}criticalmass.navigation.help.faq{% endtrans %}
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('caldera_criticalmass_static_display', { slug: 'help' }) }}">
-                        Bedienungshilfe
+                        {% trans %}criticalmass.navigation.help.help{% endtrans %}
                     </a>
                 </li>
             </ul>
@@ -45,19 +45,19 @@
             <a href="{{ path('caldera_criticalmass_statistic_overview') }}" class="dropdown-toggle"
                data-toggle="dropdown">
                 <i class="fa fa-bar-chart"></i>
-                Statistik
+                {% trans %}criticalmass.navigation.statistic.statistic{% endtrans %}
                 <span class="caret"></span>
             </a>
 
             <ul class="dropdown-menu" role="menu">
                 <li>
                     <a href="{{ path('caldera_criticalmass_statistic_overview') }}">
-                        Übersicht
+                        {% trans %}criticalmass.navigation.statistic.overview{% endtrans %}
                     </a>
                 </li>
                 <li>
                     <a href="{{ path('caldera_criticalmass_statistic_facebook') }}">
-                        facebook-Statistiken
+                        {% trans %}criticalmass.navigation.statistic.facebook{% endtrans %}
                     </a>
                 </li>
             </ul>
@@ -67,26 +67,26 @@
             <a href="{{ path('caldera_criticalmass_board_overview') }}" class="dropdown-toggle"
                data-toggle="dropdown">
                 <i class="fa fa-comments"></i>
-                Community
+                {% trans %}criticalmass.navigation.community.community{% endtrans %}
                 <span class="caret"></span>
             </a>
 
             <ul class="dropdown-menu" role="menu">
                 <li>
                     <a href="{{ path('caldera_criticalmass_timeline_index') }}">
-                        Timeline
+                        {% trans %}criticalmass.navigation.community.timeline{% endtrans %}
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ path('caldera_criticalmass_board_overview') }}">
-                        Diskussionen
+                        {% trans %}criticalmass.navigation.community.discussions{% endtrans %}
                     </a>
                 </li>
 
                 <li>
                     <a href="{{ path('caldera_criticalmass_photo_examplegallery') }}">
-                        Fotos
+                        {% trans %}criticalmass.navigation.community.photos{% endtrans %}
                     </a>
                 </li>
             </ul>
