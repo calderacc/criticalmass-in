@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Criticalmass\ViewStorage\ViewInterface\ViewableEntity;
 use App\EntityInterface\StaticMapableInterface;
 use App\Criticalmass\Sharing\ShareableInterface\Shareable;
 use Caldera\GeoBasic\Coord\Coord;
@@ -12,7 +13,6 @@ use App\EntityInterface\ElasticSearchPinInterface;
 use App\EntityInterface\PhotoInterface;
 use App\EntityInterface\PostableInterface;
 use App\EntityInterface\RouteableInterface;
-use App\EntityInterface\ViewableInterface;
 use App\Criticalmass\SocialNetwork\EntityInterface\SocialNetworkProfileAble;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -31,7 +31,7 @@ use App\Criticalmass\Sharing\Annotation as Sharing;
  * @JMS\ExclusionPolicy("all")
  * @Routing\DefaultRoute(name="caldera_criticalmass_city_show")
  */
-class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterface, PhotoInterface, RouteableInterface, AuditableInterface, AutoParamConverterAble, SocialNetworkProfileAble, PostableInterface, Shareable, StaticMapableInterface
+class City implements BoardInterface, ViewableEntity, ElasticSearchPinInterface, PhotoInterface, RouteableInterface, AuditableInterface, AutoParamConverterAble, SocialNetworkProfileAble, PostableInterface, Shareable, StaticMapableInterface
 {
     /**
      * @ORM\Id
@@ -233,7 +233,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
      * @JMS\Expose
      * @JMS\Groups({"ride-list"})
      */
-    protected $timezone;
+    protected $timezone = 'Europe/Berlin';
 
     /**
      * @ORM\Column(type="integer")
@@ -287,6 +287,16 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
      */
     protected $rideNamer;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $wikidataEntityId;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Heatmap", mappedBy="city", cascade={"persist", "remove"})
+     */
+    private $heatmap;
+
     public function __construct()
     {
         $this->rides = new ArrayCollection();
@@ -316,7 +326,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this->user;
     }
 
-    public function setUser(User $user): City
+    public function setUser(User $user = null): City
     {
         $this->user = $user;
 
@@ -557,7 +567,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this;
     }
 
-    public function getCityPopulation(): int
+    public function getCityPopulation(): ?int
     {
         return $this->cityPopulation;
     }
@@ -670,7 +680,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this->imageSize;
     }
 
-    public function setImageSize(int $imageSize): PhotoInterface
+    public function setImageSize(int $imageSize = null): PhotoInterface
     {
         $this->imageSize = $imageSize;
 
@@ -682,7 +692,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this->imageMimeType;
     }
 
-    public function setImageMimeType(string $imageMimeType): PhotoInterface
+    public function setImageMimeType(string $imageMimeType = null): PhotoInterface
     {
         $this->imageMimeType = $imageMimeType;
 
@@ -847,7 +857,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this;
     }
 
-    public function setViews(int $views): ViewableInterface
+    public function setViews(int $views): ViewableEntity
     {
         $this->views = $views;
 
@@ -859,7 +869,7 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
         return $this->views;
     }
 
-    public function incViews(): ViewableInterface
+    public function incViews(): ViewableEntity
     {
         ++$this->views;
 
@@ -954,5 +964,35 @@ class City implements BoardInterface, ViewableInterface, ElasticSearchPinInterfa
     public function getRideNamer(): ?string
     {
         return $this->rideNamer;
+    }
+
+    public function setWikidataEntityId(string $wikidataEntityId): City
+    {
+        $this->wikidataEntityId = $wikidataEntityId;
+
+        return $this;
+    }
+
+    public function getWikidataEntityId(): ?string
+    {
+        return $this->wikidataEntityId;
+    }
+
+    public function getHeatmap(): ?Heatmap
+    {
+        return $this->heatmap;
+    }
+
+    public function setHeatmap(?Heatmap $heatmap): self
+    {
+        $this->heatmap = $heatmap;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newCity = $heatmap === null ? null : $this;
+        if ($newCity !== $heatmap->getCity()) {
+            $heatmap->setCity($newCity);
+        }
+
+        return $this;
     }
 }
