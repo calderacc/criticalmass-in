@@ -131,6 +131,10 @@ caldera_criticalmass_ride:
     resource: 'ride.yml'
     prefix: /
 
+caldera_criticalmass_riderating:
+    resource: 'ride_rating.yml'
+    prefix: /
+
 caldera_criticalmass_rideestimate:
     resource: 'rideestimate.yml'
     prefix: /
