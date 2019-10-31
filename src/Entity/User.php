@@ -189,6 +189,11 @@ class User extends BaseUser implements SocialNetworkProfileAble, RouteableInterf
      */
     private $trackImportCandidates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="User", orphanRemoval=true)
+     */
+    private $ratings;
+
     public function __construct()
     {
         parent::__construct();
@@ -203,6 +208,7 @@ class User extends BaseUser implements SocialNetworkProfileAble, RouteableInterf
         $this->blogPosts = new ArrayCollection();
         $this->socialNetworkProfiles = new ArrayCollection();
         $this->trackImportCandidates = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function setId(int $id): User
@@ -691,6 +697,37 @@ class User extends BaseUser implements SocialNetworkProfileAble, RouteableInterf
             // set the owning side to null (unless already changed)
             if ($trackImportCandidate->getUser() === $this) {
                 $trackImportCandidate->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rating[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getUser() === $this) {
+                $rating->setUser(null);
             }
         }
 

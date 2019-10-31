@@ -312,6 +312,11 @@ class Ride implements ParticipateableInterface, ViewableEntity, ElasticSearchPin
      */
     private $trackImportCandidates;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Rating", mappedBy="ride", orphanRemoval=true)
+     */
+    private $ratings;
+
     public function __construct()
     {
         $this->dateTime = new \DateTime();
@@ -326,6 +331,7 @@ class Ride implements ParticipateableInterface, ViewableEntity, ElasticSearchPin
         $this->participations = new ArrayCollection();
         $this->socialNetworkProfiles = new ArrayCollection();
         $this->trackImportCandidates = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -1107,6 +1113,37 @@ class Ride implements ParticipateableInterface, ViewableEntity, ElasticSearchPin
             // set the owning side to null (unless already changed)
             if ($trackImportCandidate->getRide() === $this) {
                 $trackImportCandidate->setRide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Rating[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setRide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getRide() === $this) {
+                $rating->setRide(null);
             }
         }
 
