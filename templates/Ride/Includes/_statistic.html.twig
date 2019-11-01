@@ -39,7 +39,7 @@
 
                             {% if hasRatings %}
                                 <dt>Bewertung</dt>
-                                <dd>{{ ride_rating_stars(ride) }}</dd>
+                                <dd>{{ ride_rating_stars(ride) }} ({{ ride_rating(ride)|number_format }}/5)</dd>
                             {% endif %}
                         </dl>
                     </div>
