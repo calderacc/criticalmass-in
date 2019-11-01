@@ -1,4 +1,5 @@
 {% set hasEstimations = ride.estimatedParticipants or ride.estimatedDistance or ride.estimatedDuration %}
+{% set hasRatings = ride.ratings and ride.ratings|length > 0 %}
 
 {% if dateTime > ride.dateTime %}
     {% set pastRide = true %}
@@ -12,7 +13,7 @@
             <h3 class="panel-title">Statistik</h3>
         </div>
         <div class="panel-body">
-            {% if hasEstimations %}
+            {% if hasEstimations or hasRatings %}
                 <div class="row">
                     <div class="col-md-12">
                         <dl>
@@ -34,6 +35,11 @@
                             {% if ride.getAverageVelocity and ride.getAverageVelocity > 0 %}
                                 <dt>Durchschnittsgeschwindigkeit</dt>
                                 <dd>{{ ride.getAverageVelocity()|round(2) }} Kilometer&nbsp;pro&nbsp;Stunde</dd>
+                            {% endif %}
+
+                            {% if hasRatings %}
+                                <dt>Bewertung</dt>
+                                <dd>{{ ride_rating(ride)|number_format }}</dd>
                             {% endif %}
                         </dl>
                     </div>
