@@ -6,10 +6,10 @@ use App\Criticalmass\DataQuery\DataQueryManager\DataQueryManagerInterface;
 use App\Criticalmass\DataQuery\RequestParameterList\RequestToListConverter;
 use App\Entity\Photo;
 use App\Entity\Ride;
+use Doctrine\Persistence\ManagerRegistry;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,6 +36,27 @@ class PhotoController extends BaseController
         $view = View::create();
         $view
             ->setData($photoList)
+            ->setFormat('json')
+            ->setStatusCode(200);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * Retrieve a photo identified by it's id.
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Retrieve a photo identified by it's id",
+     *  section="Photo",
+     * )
+     * @ParamConverter("photo", class="App:Photo")
+     */
+    public function showPhotoAction(ManagerRegistry $registry, Photo $photo): Response
+    {
+        $view = View::create();
+        $view
+            ->setData($photo)
             ->setFormat('json')
             ->setStatusCode(200);
 

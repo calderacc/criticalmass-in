@@ -23,6 +23,13 @@ caldera_criticalmass_rest_city_list:
     controller: App\Controller\Api\CityController::listAction
     methods:  [GET]
 
+caldera_criticalmass_rest_photo_show:
+    path:     /photo/{photoId}
+    controller: App\Controller\Api\PhotoController::showPhotoAction
+    methods:  [GET]
+    options:
+        expose: true
+
 caldera_criticalmass_rest_photo_ridelist:
     path:     /{citySlug}/{rideIdentifier}/listPhotos
     controller: App\Controller\Api\PhotoController::listRidePhotosAction
