@@ -161,6 +161,9 @@
             "src/DBAL/Types/.gitignore"
         ]
     },
+    "fresh/vich-uploader-serialization-bundle": {
+        "version": "v2.4.2"
+    },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "2.0",
         "recipe": {
