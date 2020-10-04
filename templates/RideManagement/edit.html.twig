@@ -73,7 +73,7 @@
         {{ form_start(form) }}
         <div class="row">
             <div class="col-md-12">
-                <div id="map" style="height: 250px;">
+                <div id="map" class="map" style="height: 250px;" data-map-center-latitude="{{ ride.latitude|default(ride.city.latitude) }}" data-map-center-longitude="{{ ride.longitude|default(ride.city.longitude) }}" data-map-zoomlevel="10" data-map-marker-latitude="{{ ride.latitude|default(ride.city.latitude) }}" data-map-marker-longitude="{{ ride.longitude|default(ride.city.longitude) }}">
 
                 </div>
             </div>
@@ -157,7 +157,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    {{ form_widget(form.dateTime.time, { attr: { class: 'form-control' } }) }}
+                                    {{ form_widget(form.dateTime.time, { attr: { class: 'form-control timepicker' } }) }}
                                 </div>
                             </div>
                         </div>
@@ -170,7 +170,13 @@
                             <label class="control-label" for="location">
                                 Treffpunkt:
                             </label>
-                            <button id="search-location-button" class="btn btn-default btn-xs pull-right" type="button">
+                            <button id="search-location-button" class="btn btn-default btn-xs pull-right geocoding"
+                                    data-geocoding-country="{{ ride.city.region.parent }}"
+                                    data-geocoding-state="{{ ride.city.region }}"
+                                    data-geocoding-city="{{ ride.city.city }}"
+                                    data-geocoding-input-selector="#ride_location"
+                                    data-target-marker-number="0"
+                                    type="button">
                                 <i class="far fa-map-marker"></i>
                             </button>
                             {{ form_widget(form.location, { 'attr' : { 'class': 'form-control' } }) }}
